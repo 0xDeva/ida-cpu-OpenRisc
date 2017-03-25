@@ -93,7 +93,7 @@ class openrisc_processor_t(processor_t):
         {'name': 'l.ff1', 'feature': CF_USE1 | CF_USE2, 'cmt': 'l.ff1 rD,rA,rB'},
         {'name': 'l.fl1', 'feature': CF_USE1 | CF_USE2, 'cmt': 'l.fl1 rD,rA,rB'},
         {'name': 'l.j', 'feature': CF_USE1, 'cmt': 'l.j N'},
-        {'name': 'l.jal', 'feature': CF_USE1, 'cmt': 'l.jal N'},
+        {'name': 'l.jal', 'feature': CF_USE1 | CF_CALL, 'cmt': 'l.jal N'},
         {'name': 'l.jalr', 'feature': CF_USE1, 'cmt': 'l.jalr rB'},
         {'name': 'l.jr', 'feature': CF_USE1, 'cmt': 'l.jr rB'},
         {'name': 'l.lbs', 'feature': CF_USE1 | CF_USE2, 'cmt': 'l.lbs rD,I(rA)'},
