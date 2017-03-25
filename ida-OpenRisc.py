@@ -288,6 +288,7 @@ class openrisc_processor_t(processor_t):
         processor_t.__init__(self)
         self._init_instructions()
         self._init_registers()
+        self.delayed_jmp = dict()
 
     def _init_instructions(self):
         self.inames = {}
@@ -2352,9 +2353,13 @@ class openrisc_processor_t(processor_t):
         elif op.type == o_near:
             if self.cmd.get_canon_feature() & CF_CALL:
                 fl = fl_CN
+                ua_add_cref(0, op.addr, fl)
             else:
                 fl = fl_JN
-            ua_add_cref(0, op.addr, fl)
+                self.delayed_jmp[self.cmd.ea+4] = {'addr': op.addr, 'fl': fl}
+            
+        
+
 
 
     def emu(self):
@@ -2370,6 +2375,10 @@ class openrisc_processor_t(processor_t):
             self._emu_operand(cmd[3])
         if not ft & CF_STOP:
             ua_add_cref(0, cmd.ea + cmd.size, fl_F)
+
+        if self.cmd.ea in self.delayed_jmp:
+            ua_add_cref(0, self.delayed_jmp[self.cmd.ea]['addr'], self.delayed_jmp[self.cmd.ea]['fl'])
+
         return True
 
     def outop(self, op):
